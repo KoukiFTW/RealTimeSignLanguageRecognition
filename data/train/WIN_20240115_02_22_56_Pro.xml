@@ -1,0 +1,26 @@
+<annotation>
+	<folder>8</folder>
+	<filename>WIN_20240115_02_22_56_Pro.jpg</filename>
+	<path>C:\Users\abdul\Desktop\FYP\MSL-Sign-Language-Recognition\Tensorflow\workspace\images\collectedimages\8\WIN_20240115_02_22_56_Pro.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1920</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>8</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>373</xmin>
+			<ymin>231</ymin>
+			<xmax>885</xmax>
+			<ymax>844</ymax>
+		</bndbox>
+	</object>
+</annotation>
