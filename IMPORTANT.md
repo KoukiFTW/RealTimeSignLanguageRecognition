@@ -134,13 +134,5 @@ python scripts/real_time_landmark_detection.py
 
 ---
 
-## License
-This project is licensed under the [MIT License](LICENSE).
-
----
-
 ## Contributors
-- **[Your Name]** - Initial development
-
-Feel free to contribute! Fork the repository, make your changes, and submit a pull request.
-
+- **ABDUL ALIF BCS22090018** - Initial development
