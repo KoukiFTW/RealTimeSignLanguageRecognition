@@ -1,5 +1,5 @@
 import numpy as np
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator # type: ignore
 
 # Augmentation settings
 datagen = ImageDataGenerator(
