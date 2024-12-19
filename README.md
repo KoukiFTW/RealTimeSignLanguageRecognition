@@ -1,10 +1,11 @@
-# RealTimeSignLanguageRecognition
+# MSLRealTimeSignLanguageRecognition
 
-This project is a real-time sign language recognition system that detects hand gestures using MediaPipe Hands and classifies them using a TensorFlow-based deep learning model trained on hand landmarks. The system can recognize gestures representing numbers from `0` to `10` and provides accurate predictions in real-time.
+This project is a Malaysian real-time sign language recognition system (MSL) that detects hand gestures using MediaPipe Hands and classifies them using a TensorFlow-based deep learning model trained on hand landmarks. The system can recognize gestures representing numbers from `0` to `10` and provides accurate predictions in real-time.
 
 ---
 
 ## Project Features
+- **MSL**: Support Malaysian Sign Language.
 - **Real-Time Gesture Detection**: Tracks the user's hand and recognizes gestures dynamically.
 - **Hand Landmark-Based Model**: Utilizes MediaPipe's hand landmarks for efficient and accurate classification.
 - **Optimized with TensorFlow Lite**: Ensures fast inference during real-time detection.
