@@ -1,5 +1,4 @@
 # RealTimeSignLanguageRecognition
-# Real-Time Sign Language Recognition System
 
 This project is a real-time sign language recognition system that detects hand gestures using MediaPipe Hands and classifies them using a TensorFlow-based deep learning model trained on hand landmarks. The system can recognize gestures representing numbers from `0` to `10` and provides accurate predictions in real-time.
 
