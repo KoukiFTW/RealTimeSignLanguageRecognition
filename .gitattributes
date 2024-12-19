@@ -1,0 +1,4 @@
+models/best_model.keras filter=lfs diff=lfs merge=lfs -text
+models/sign_language_model_final.h5 filter=lfs diff=lfs merge=lfs -text
+data/augmented_X_train.npy filter=lfs diff=lfs merge=lfs -text
+data/preprocessed_data.npz filter=lfs diff=lfs merge=lfs -text
