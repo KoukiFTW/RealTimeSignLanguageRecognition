@@ -1,5 +1,4 @@
 # RealTimeSignLanguageRecognition
-# Real-Time Sign Language Recognition System
 
 This project is a real-time sign language recognition system that detects hand gestures using MediaPipe Hands and classifies them using a TensorFlow-based deep learning model trained on hand landmarks. The system can recognize gestures representing numbers from `0` to `10` and provides accurate predictions in real-time.
 
@@ -135,13 +134,5 @@ python scripts/real_time_landmark_detection.py
 
 ---
 
-## License
-This project is licensed under the [MIT License](LICENSE).
-
----
-
 ## Contributors
-- **[Your Name]** - Initial development
-
-Feel free to contribute! Fork the repository, make your changes, and submit a pull request.
-
+- **ABDUL ALIF BCS22090018** - Initial development
