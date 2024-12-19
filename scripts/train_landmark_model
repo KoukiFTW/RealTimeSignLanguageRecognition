@@ -1,0 +1,69 @@
+import numpy as np
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+from tensorflow.keras.optimizers import Adam
+import os
+
+# Load landmark data
+def load_landmark_data():
+    train_data = np.load("data/landmarks_train.npz")
+    test_data = np.load("data/landmarks_test.npz")
+    X_train, y_train = train_data['landmarks'], train_data['labels']
+    X_test, y_test = test_data['landmarks'], test_data['labels']
+
+    # One-hot encode labels
+    num_classes = len(np.unique(y_train))
+    y_train = np.eye(num_classes)[y_train]
+    y_test = np.eye(num_classes)[y_test]
+
+    return X_train, y_train, X_test, y_test
+
+# Build the model
+def build_landmark_model(input_shape, num_classes):
+    model = Sequential([
+        Dense(128, activation='relu', input_shape=input_shape),
+        Dropout(0.3),
+        Dense(64, activation='relu'),
+        Dropout(0.3),
+        Dense(num_classes, activation='softmax')
+    ])
+    return model
+
+# Train the model
+def train_model():
+    # Load data
+    X_train, y_train, X_test, y_test = load_landmark_data()
+
+    # Build model
+    input_shape = (X_train.shape[1],)  # Number of features (63 for 21 landmarks)
+    num_classes = y_train.shape[1]
+    model = build_landmark_model(input_shape, num_classes)
+
+    # Compile the model
+    model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
+
+    # Define callbacks
+    checkpoint = ModelCheckpoint('models/best_landmark_model.keras', save_best_only=True, monitor='val_accuracy', mode='max')
+    early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+
+    # Train the model
+    history = model.fit(
+        X_train, y_train,
+        validation_data=(X_test, y_test),
+        epochs=50,
+        batch_size=32,
+        callbacks=[checkpoint, early_stopping],
+        verbose=1
+    )
+
+    # Save the final model
+    model.save("models/landmark_model_final.h5")
+    print("Training complete. Final model saved to 'models/landmark_model_final'")
+
+if __name__ == "__main__":
+    # Ensure models directory exists
+    os.makedirs("models", exist_ok=True)
+
+    # Train the model
+    train_model()

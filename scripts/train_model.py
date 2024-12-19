@@ -1,29 +1,35 @@
-from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping # type: ignore
-from tensorflow.keras.models import Sequential # type: ignore
-from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, Dropout # type: ignore
-from tensorflow.keras.optimizers import Adam # type: ignore
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, Dropout
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.applications import MobileNetV2
 import numpy as np
 import os
 
-# Create directories if not exist
-os.makedirs("models", exist_ok=True)
+# Load augmented training data and preprocessed test data
+def load_data():
+    # Load augmented training data
+    X_train = np.load("data/augmented_X_train.npy")
+    y_train = np.load("data/augmented_y_train.npy")
 
-# Load preprocessed data
-def load_data(npz_file):
-    data = np.load(npz_file)
-    return data['X_train'], data['y_train'], data['X_test'], data['y_test']
+    # Load test data
+    test_data = np.load("data/preprocessed_data.npz")
+    X_test, y_test = test_data['X_test'], test_data['y_test']
 
-# Build the model
+    return X_train, y_train, X_test, y_test
+
+# Build the model (with fine-tuning)
 def build_model(input_shape, num_classes):
+    # Load MobileNetV2 as the base model
+    base_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=input_shape)
+    base_model.trainable = True  # Unfreeze the base model for fine-tuning
+
+    # Add custom classification head
     model = Sequential([
-        Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
-        MaxPooling2D((2, 2)),
-        Dropout(0.25),
-        Conv2D(64, (3, 3), activation='relu'),
-        MaxPooling2D((2, 2)),
-        Dropout(0.25),
+        base_model,
+        MaxPooling2D(pool_size=(2, 2)),
         Flatten(),
-        Dense(128, activation='relu'),
+        Dense(256, activation='relu'),
         Dropout(0.5),
         Dense(num_classes, activation='softmax')
     ])
@@ -32,15 +38,17 @@ def build_model(input_shape, num_classes):
 # Train the model
 def train_model():
     # Load data
-    X_train, y_train, X_test, y_test = load_data("data/preprocessed_data.npz")
+    X_train, y_train, X_test, y_test = load_data()
 
     # Build model
-    input_shape = X_train.shape[1:]
-    num_classes = y_train.shape[1]
+    input_shape = X_train.shape[1:]  # (224, 224, 3)
+    num_classes = y_train.shape[1]  # Number of output classes
     model = build_model(input_shape, num_classes)
 
     # Compile the model
-    model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer=Adam(learning_rate=1e-5),  # Small learning rate for fine-tuning
+                  loss='categorical_crossentropy',
+                  metrics=['accuracy'])
 
     # Define callbacks
     checkpoint = ModelCheckpoint('models/best_model.keras', save_best_only=True, monitor='val_accuracy', mode='max')
@@ -50,9 +58,10 @@ def train_model():
     history = model.fit(
         X_train, y_train,
         validation_data=(X_test, y_test),
-        epochs=50,
+        epochs=20,
         batch_size=32,
-        callbacks=[checkpoint, early_stopping]
+        callbacks=[checkpoint, early_stopping],
+        verbose=1
     )
 
     # Save the final model in TensorFlow SavedModel format
@@ -62,4 +71,8 @@ def train_model():
     return history
 
 if __name__ == "__main__":
+    # Ensure the models directory exists
+    os.makedirs("models", exist_ok=True)
+
+    # Train the model
     train_model()
