@@ -16,7 +16,7 @@ This project is a Malaysian real-time sign language recognition system (MSL) tha
 
 ## Installation
 
-### 0. Download Python v3.12
+### Install Python v3.12
 
 ### 1. Clone the Repository
 ```bash
