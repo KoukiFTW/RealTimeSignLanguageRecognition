@@ -16,6 +16,8 @@ This project is a Malaysian real-time sign language recognition system (MSL) tha
 
 ## Installation
 
+### 0. Download Python v3.12
+
 ### 1. Clone the Repository
 ```bash
 git clone <your-repository-url>
@@ -73,7 +75,7 @@ RealTimeSignLanguageRecognition/
 
 ## Step-by-Step Usage
 
-### 1. Data Preprocessing (Optional)
+### 1. Data Preprocessing 
 If you have raw images, preprocess them into `.npz` format.
 ```bash
 python scripts/data_preprocessing.py
@@ -97,13 +99,7 @@ Train a deep learning model using the extracted hand landmarks.
 python scripts/train_landmark_model.py
 ```
 
-### 5. Convert the Model to TensorFlow Lite
-Optimize the trained model for real-time inference.
-```bash
-python scripts/convert_to_tflite.py
-```
-
-### 6. Real-Time Gesture Recognition
+### 5. Real-Time Gesture Recognition
 Run the real-time detection system.
 ```bash
 python scripts/real_time_landmark_detection.py
